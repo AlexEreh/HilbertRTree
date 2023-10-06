@@ -9,7 +9,7 @@ import java.util.List;
 
 
 public final class HPRTree<T> implements Iterable<Item<T>> {
-	private static final int ENV_SIZE = 4;
+	private static final int MBR_SIZE = 4;
 
 	private static final int HILBERT_LEVEL = 12;
 
@@ -62,7 +62,7 @@ public final class HPRTree<T> implements Iterable<Item<T>> {
 		do {
 			layerIndexList.add(index);
 			layerSize = numNodesToCover(layerSize, nodeCapacity);
-			index += ENV_SIZE * layerSize;
+			index += MBR_SIZE * layerSize;
 		} while (layerSize > 1);
 		return toIntArray(layerIndexList);
 	}
@@ -120,7 +120,7 @@ public final class HPRTree<T> implements Iterable<Item<T>> {
 		int layerIndex = layerStartIndex.length - 2;
 		int layerSize = layerSize(layerIndex);
 		// query each node in layer
-		for (int i = 0; i < layerSize; i += ENV_SIZE) {
+		for (int i = 0; i < layerSize; i += MBR_SIZE) {
 			queryNode(layerIndex, i, searchEnv, visitor);
 		}
 	}
@@ -130,7 +130,7 @@ public final class HPRTree<T> implements Iterable<Item<T>> {
 		int nodeIndex = layerStart + nodeOffset;
 		if (!intersects(nodeIndex, searchEnv)) return;
 		if (layerIndex == 0) {
-			int childNodesOffset = nodeOffset / ENV_SIZE * nodeCapacity;
+			int childNodesOffset = nodeOffset / MBR_SIZE * nodeCapacity;
 			queryItems(childNodesOffset, searchEnv, visitor);
 		} else {
 			int childNodesOffset = nodeOffset * nodeCapacity;
@@ -152,7 +152,7 @@ public final class HPRTree<T> implements Iterable<Item<T>> {
 		int layerStart = layerStartIndex[layerIndex];
 		int layerEnd = layerStartIndex[layerIndex + 1];
 		for (int i = 0; i < nodeCapacity; i++) {
-			int nodeOffset = blockOffset + ENV_SIZE * i;
+			int nodeOffset = blockOffset + MBR_SIZE * i;
 			// don't query past layer end
 			if (layerStart + nodeOffset >= layerEnd) break;
 
@@ -168,9 +168,7 @@ public final class HPRTree<T> implements Iterable<Item<T>> {
 
 			// visit the item if its MBR intersects search env
 			Item<T> item = items.get(itemIndex);
-			//nodeIntersectsCount++;
 			if (item.getMBR().intersects(searchEnv)) {
-				//if (item.getMBR().intersects(searchEnv)) {
 				visitor.visitItem(item.getItem());
 			}
 		}
@@ -182,10 +180,7 @@ public final class HPRTree<T> implements Iterable<Item<T>> {
 		return layerEnd - layerStart;
 	}
 
-	/**
-	 * Builds the index, if not already built.
-	 */
-	public synchronized void build() {
+	public void build() {
 		// skip if already built
 		if (isBuilt) return;
 		isBuilt = true;
@@ -212,7 +207,7 @@ public final class HPRTree<T> implements Iterable<Item<T>> {
 		int childLayerStart = layerStartIndex[layerIndex - 1];
 		int layerSize = layerSize(layerIndex);
 		int childLayerEnd = layerStart;
-		for (int i = 0; i < layerSize; i += ENV_SIZE) {
+		for (int i = 0; i < layerSize; i += MBR_SIZE) {
 			int childStart = childLayerStart + nodeCapacity * i;
 			computeNodeBounds(layerStart + i, childStart, childLayerEnd);
 		}
@@ -227,7 +222,7 @@ public final class HPRTree<T> implements Iterable<Item<T>> {
 	}
 
 	private void computeLeafNodes(int layerSize) {
-		for (int i = 0; i < layerSize; i += ENV_SIZE) {
+		for (int i = 0; i < layerSize; i += MBR_SIZE) {
 			computeLeafNodeBounds(i, nodeCapacity * i / 4);
 		}
 	}
