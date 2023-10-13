@@ -13,7 +13,6 @@ import java.util.Objects;
 @AllArgsConstructor
 public final class Coordinate implements Comparable<Coordinate>, Cloneable {
 
-	public static final double NULL_ORDINATE = Double.NaN;
 
 	public static final int X = 0;
 
@@ -26,6 +25,7 @@ public final class Coordinate implements Comparable<Coordinate>, Cloneable {
 	public Coordinate(Coordinate c) {
 		this(c.x, c.y);
 	}
+
 	public double getOrdinate(int ordinateIndex) {
 		return switch (ordinateIndex) {
 			case X -> x;
@@ -33,6 +33,7 @@ public final class Coordinate implements Comparable<Coordinate>, Cloneable {
 			default -> throw new IllegalArgumentException("Invalid ordinate index: " + ordinateIndex);
 		};
 	}
+
 	public void setOrdinate(int ordinateIndex, double value) {
 		switch (ordinateIndex) {
 			case X -> setX(value);
@@ -40,6 +41,7 @@ public final class Coordinate implements Comparable<Coordinate>, Cloneable {
 			default -> throw new IllegalArgumentException("Invalid ordinate index: " + ordinateIndex);
 		}
 	}
+
 	public boolean isValid() {
 		if (!Double.isFinite(x)) return false;
 		return Double.isFinite(y);
@@ -86,6 +88,7 @@ public final class Coordinate implements Comparable<Coordinate>, Cloneable {
 		double dy = y - c.y;
 		return Math.hypot(dx, dy);
 	}
+
 	public int hashCode() {
 		return Objects.hash(x, y);
 	}

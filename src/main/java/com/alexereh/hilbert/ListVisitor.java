@@ -15,8 +15,7 @@ public final class ListVisitor<T> implements ItemVisitor<T> {
 	public ListVisitor() {
 	}
 
-	public void visitItem(T item)
-	{
+	public void visitItem(T item) {
 		items.add(item);
 	}
 

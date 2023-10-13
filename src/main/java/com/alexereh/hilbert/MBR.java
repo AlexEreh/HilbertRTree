@@ -12,26 +12,12 @@ import org.jetbrains.annotations.NotNull;
 @SuppressWarnings("unused")
 public final class MBR implements Comparable<MBR> {
 
-	/**
-	 * -- GETTER --
-	 *
-	 */
 	private double minX;
 
-	/**
-	 * -- GETTER --
-	 *
-	 */
 	private double maxX;
 
-	/**
-	 * -- GETTER --
-	 */
 	private double minY;
 
-	/**
-	 * -- GETTER --
-	 */
 	private double maxY;
 
 	public MBR() {
@@ -296,8 +282,8 @@ public final class MBR implements Comparable<MBR> {
 		}
 		return maxX == otherMBR.getMaxX() && maxY == otherMBR.getMaxY() && minX == otherMBR.getMinX() && minY == otherMBR.getMinY();
 	}
-	public void expandToInclude(Coordinate p)
-	{
+
+	public void expandToInclude(Coordinate p) {
 		expandToInclude(p.getX(), p.getY());
 	}
 
@@ -307,8 +293,7 @@ public final class MBR implements Comparable<MBR> {
 			maxX = x;
 			minY = y;
 			maxY = y;
-		}
-		else {
+		} else {
 			if (x < minX) {
 				minX = x;
 			}
@@ -333,8 +318,7 @@ public final class MBR implements Comparable<MBR> {
 			maxX = other.getMaxX();
 			minY = other.getMinY();
 			maxY = other.getMaxY();
-		}
-		else {
+		} else {
 			if (other.minX < minX) {
 				minX = other.minX;
 			}
@@ -349,6 +333,7 @@ public final class MBR implements Comparable<MBR> {
 			}
 		}
 	}
+
 	public int compareTo(@NotNull MBR env) {
 
 		// compare nulls if present

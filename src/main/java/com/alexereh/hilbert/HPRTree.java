@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Consumer;
 
 
 public final class HPRTree<T> implements Iterable<Item<T>> {
@@ -27,18 +28,10 @@ public final class HPRTree<T> implements Iterable<Item<T>> {
 
 	private boolean isBuilt = false;
 
-	/**
-	 * Creates a new index with the default node capacity.
-	 */
 	public HPRTree() {
 		this(DEFAULT_NODE_CAPACITY);
 	}
 
-	/**
-	 * Creates a new index with the given node capacity.
-	 *
-	 * @param nodeCapacity the node capacity to use
-	 */
 	public HPRTree(int nodeCapacity) {
 		this.nodeCapacity = nodeCapacity;
 	}
@@ -217,7 +210,9 @@ public final class HPRTree<T> implements Iterable<Item<T>> {
 		for (int i = 0; i <= nodeCapacity; i++) {
 			int index = blockStart + 4 * i;
 			if (index >= nodeMaxIndex) break;
-			updateNodeBounds(nodeIndex, nodeBounds[index], nodeBounds[index + 1], nodeBounds[index + 2], nodeBounds[index + 3]);
+			updateNodeBounds(
+					nodeIndex, nodeBounds[index], nodeBounds[index + 1],
+					nodeBounds[index + 2], nodeBounds[index + 3]);
 		}
 	}
 
